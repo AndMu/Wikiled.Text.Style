@@ -2,7 +2,7 @@
 using System.Linq;
 using Wikiled.Text.Inquirer.Data;
 
-namespace Wikiled.Sentiment.Text.NLP.Style
+namespace Wikiled.Text.Style.Logic
 {
     public static class InquirerDefinitionExtensions
     {

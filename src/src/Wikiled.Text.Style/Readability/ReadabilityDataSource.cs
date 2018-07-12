@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Wikiled.Sentiment.Text.NLP.Style.Description.Data;
 using Wikiled.Text.Analysis.Reflection;
 using Wikiled.Text.Analysis.Structure;
+using Wikiled.Text.Style.Description.Data;
+using Wikiled.Text.Style.Logic;
 
-namespace Wikiled.Sentiment.Text.NLP.Style.Readability
+namespace Wikiled.Text.Style.Readability
 {
     /// <summary>
     /// Text Readability

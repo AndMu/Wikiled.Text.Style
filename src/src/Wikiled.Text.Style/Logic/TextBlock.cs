@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Wikiled.Common.Extensions;
-using Wikiled.Sentiment.Text.NLP.Style.Obscurity;
-using Wikiled.Sentiment.Text.NLP.Style.Readability;
-using Wikiled.Sentiment.Text.NLP.Style.Surface;
-using Wikiled.Sentiment.Text.Parser;
 using Wikiled.Text.Analysis.Reflection;
 using Wikiled.Text.Analysis.Structure;
+using Wikiled.Text.Style.Obscurity;
+using Wikiled.Text.Style.Readability;
+using Wikiled.Text.Style.Surface;
 
-namespace Wikiled.Sentiment.Text.NLP.Style
+namespace Wikiled.Text.Style.Logic
 {
     [InfoCategory("Text Style")]
     public class TextBlock : IDataSource
@@ -18,13 +17,8 @@ namespace Wikiled.Sentiment.Text.NLP.Style
 
         private readonly Dictionary<string, List<WordEx>> wordDictionary = new Dictionary<string, List<WordEx>>(StringComparer.OrdinalIgnoreCase);
 
-        public TextBlock(IWordsHandler handler, SentenceItem[] sentences, bool load = true)
+        public TextBlock(SentenceItem[] sentences, bool load = true)
         {
-            if (handler is null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
-
             if (sentences is null)
             {
                 throw new ArgumentNullException(nameof(sentences));
@@ -45,7 +39,7 @@ namespace Wikiled.Sentiment.Text.NLP.Style
             {
                 throw new ArgumentException("Value cannot be an empty collection.", nameof(Words));
             }
-            
+
             var pure = new List<WordEx>();
             foreach (var word in Words)
             {
@@ -61,7 +55,7 @@ namespace Wikiled.Sentiment.Text.NLP.Style
 
             PureWords = pure.ToArray();
             VocabularyObscurity = new VocabularyObscurity(handler.FrequencyListManager, this);
-            SyntaxFeatures = new SyntaxFeatures(handler, this);
+            SyntaxFeatures = new SyntaxFeatures(this);
             InquirerFinger = new InquirerFingerPrint(handler.InquirerManager, this);
 
             if (load)

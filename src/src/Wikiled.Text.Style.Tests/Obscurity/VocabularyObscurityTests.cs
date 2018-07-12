@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
-using Wikiled.Sentiment.TestLogic.Shared.Helpers;
-using Wikiled.Sentiment.Text.NLP.Style;
 
-namespace Wikiled.Sentiment.Text.Tests.NLP.Style.Obscurity
+namespace Wikiled.Text.Style.Tests.Obscurity
 {
     [TestFixture]
     public class VocabularyObscurityTests

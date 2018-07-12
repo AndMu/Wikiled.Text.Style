@@ -1,6 +1,6 @@
-﻿using Wikiled.Sentiment.Text.NLP.Style.Readability;
+﻿using Wikiled.Text.Style.Readability;
 
-namespace Wikiled.Sentiment.Text.NLP.Style.Description.Data
+namespace Wikiled.Text.Style.Description.Data
 {
     public class ReadabilityData : INLPDataItem
     {

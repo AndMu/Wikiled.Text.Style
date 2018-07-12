@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Wikiled.Sentiment.TestLogic.Shared.Helpers;
-using Wikiled.Sentiment.Text.Data;
-using Wikiled.Sentiment.Text.NLP.Style;
-using Wikiled.Sentiment.Text.NLP.Style.Readability;
-using Wikiled.Sentiment.Text.Parser;
-using Wikiled.Sentiment.Text.Tokenizer;
 
-namespace Wikiled.Sentiment.Text.Tests.NLP.Style.Readability
+namespace Wikiled.Text.Style.Tests.Readability
 {
     [TestFixture]
     public class ReadabilityDataTests

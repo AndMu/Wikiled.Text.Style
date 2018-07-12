@@ -1,4 +1,4 @@
-﻿namespace Wikiled.Sentiment.Text.NLP.Style.Readability
+﻿namespace Wikiled.Text.Style.Readability
 {
     public enum FleschReadingEase
     {

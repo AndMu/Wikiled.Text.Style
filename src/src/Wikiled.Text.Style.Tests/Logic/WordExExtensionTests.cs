@@ -1,10 +1,6 @@
 ﻿using NUnit.Framework;
-using Wikiled.Sentiment.TestLogic.Shared.Helpers;
-using Wikiled.Sentiment.Text.NLP.Style;
-using Wikiled.Sentiment.Text.Structure;
-using Wikiled.Text.Analysis.Structure;
 
-namespace Wikiled.Sentiment.Text.Tests.NLP.Style
+namespace Wikiled.Text.Style.Tests.Logic
 {
     [TestFixture]
     public class WordExExtensionTests

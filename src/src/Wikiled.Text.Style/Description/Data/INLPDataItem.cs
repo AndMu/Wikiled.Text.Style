@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wikiled.Sentiment.Text.NLP.Style.Description.Data
+namespace Wikiled.Text.Style.Description.Data
 {
     public interface INLPDataItem : ICloneable
     {

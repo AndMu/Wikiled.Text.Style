@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Wikiled.Sentiment.TestLogic.Shared.Helpers;
-using Wikiled.Sentiment.Text.NLP.Style;
 
-namespace Wikiled.Sentiment.Text.Tests.NLP.Style.Surface
+namespace Wikiled.Text.Style.Tests.Surface
 {
     [TestFixture]
     public class SurfaceDataTests

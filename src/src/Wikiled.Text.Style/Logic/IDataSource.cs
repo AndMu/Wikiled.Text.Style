@@ -1,4 +1,4 @@
-﻿namespace Wikiled.Sentiment.Text.NLP.Style
+﻿namespace Wikiled.Text.Style.Logic
 {
     public interface IDataSource
     {

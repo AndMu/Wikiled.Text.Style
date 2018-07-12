@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Wikiled.Text.Analysis.Structure;
 
-namespace Wikiled.Sentiment.Text.NLP.Style
+namespace Wikiled.Text.Style.Logic
 {
     public static class SentenceItemExtension
     {

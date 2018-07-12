@@ -1,13 +1,11 @@
 ﻿using System;
+using Wikiled.Text.Analysis.NLP;
 using Wikiled.Text.Analysis.POS;
 using Wikiled.Text.Analysis.POS.Tags;
-using Wikiled.Sentiment.Text.Parser;
-using Wikiled.Sentiment.Text.Words;
-using Wikiled.Text.Analysis.NLP;
 using Wikiled.Text.Analysis.Structure;
 using Wikiled.Text.Analysis.Words;
 
-namespace Wikiled.Sentiment.Text.NLP.Style
+namespace Wikiled.Text.Style.Logic
 {
     public static class WordExExtension
     {
@@ -18,12 +16,7 @@ namespace Wikiled.Sentiment.Text.NLP.Style
                 throw new ArgumentNullException(nameof(word));
             }
 
-            if (word.UnderlyingWord is IWordItem wordItem)
-            {
-                return wordItem.POS == POSTags.Instance.CC;
-            }
-
-            return WordTypeResolver.Instance.IsCoordinatingConjunctions(word.Text);
+            return word.Tag == POSTags.Instance.CC || WordTypeResolver.Instance.IsCoordinatingConjunctions(word.Text);
         }
 
         public static bool IsPronoun(this WordEx word)
@@ -33,12 +26,7 @@ namespace Wikiled.Sentiment.Text.NLP.Style
                 throw new ArgumentNullException(nameof(word));
             }
 
-            if (word.UnderlyingWord is IWordItem wordItem)
-            {
-                return wordItem.POS.WordType == WordType.Pronoun;
-            }
-
-            return WordTypeResolver.Instance.IsPronoun(word.Text);
+            return word.Tag.WordType == WordType.Pronoun || WordTypeResolver.Instance.IsPronoun(word.Text);
         }
 
         public static int CountSyllables(this WordEx word)
@@ -46,11 +34,6 @@ namespace Wikiled.Sentiment.Text.NLP.Style
             if (word is null)
             {
                 throw new ArgumentNullException(nameof(word));
-            }
-
-            if (word.UnderlyingWord is IWordItem wordItem)
-            {
-                return EnglishSyllableCounter.Instance.CountSyllables(wordItem.Text);
             }
 
             return EnglishSyllableCounter.Instance.CountSyllables(word.Text);
@@ -68,12 +51,7 @@ namespace Wikiled.Sentiment.Text.NLP.Style
                 throw new ArgumentNullException(nameof(word));
             }
 
-            if (word.UnderlyingWord is IWordItem wordItem)
-            {
-                return wordItem.POS.WordType == type;
-            }
-
-            return tagger.GetTag(word.Text).WordType == type;
+            return word.Tag.WordType == type || tagger.GetTag(word.Text).WordType == type;
         }
 
         public static bool IsDigit(this WordEx word)
@@ -83,16 +61,11 @@ namespace Wikiled.Sentiment.Text.NLP.Style
                 throw new ArgumentNullException(nameof(word));
             }
 
-            if (word.UnderlyingWord is IWordItem wordItem)
-            {
-                return wordItem.Entity == NamedEntities.Number ||
-                       wordItem.Entity == NamedEntities.Percent ||
-                       wordItem.Entity == NamedEntities.Money ||
-                       wordItem.Entity == NamedEntities.Ordinal ||
-                       wordItem.POS == POSTags.Instance.CD;
-            }
-
-            return false;
+            return word.EntityType == NamedEntities.Number ||
+                   word.EntityType == NamedEntities.Percent ||
+                   word.EntityType == NamedEntities.Money ||
+                   word.EntityType == NamedEntities.Ordinal ||
+                   word.Tag == POSTags.Instance.CD;
         }
 
         public static bool IsWordType(this IPOSTagger tagger, WordEx word, BasePOSType posType)
@@ -112,29 +85,14 @@ namespace Wikiled.Sentiment.Text.NLP.Style
                 throw new ArgumentNullException(nameof(posType));
             }
 
-            if (word.UnderlyingWord is IWordItem wordItem)
-            {
-                return wordItem.POS == posType;
-            }
-
-            return tagger.GetTag(word.Text) == posType;
+            return word.Tag == posType || tagger.GetTag(word.Text) == posType;
         }
 
-        public static bool IsQuestion(this WordEx word, IWordsHandler wordsHandler)
+        public static bool IsQuestion(this WordEx word)
         {
             if (word is null)
             {
                 throw new ArgumentNullException(nameof(word));
-            }
-
-            if (wordsHandler is null)
-            {
-                throw new ArgumentNullException(nameof(wordsHandler));
-            }
-
-            if (word.UnderlyingWord is IWordItem wordItem)
-            {
-                return wordItem.IsQuestion;
             }
 
             return wordsHandler.IsQuestion(wordsHandler.WordFactory.CreateWord(word.Text, "NN"));

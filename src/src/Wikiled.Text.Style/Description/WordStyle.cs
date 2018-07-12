@@ -1,10 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Wikiled.Sentiment.Text.NLP.Style.Description.Data;
 using Wikiled.Text.Analysis.NLP.NRC;
 using Wikiled.Text.Analysis.Structure;
+using Wikiled.Text.Style.Description.Data;
 
-namespace Wikiled.Sentiment.Text.NLP.Style.Description
+namespace Wikiled.Text.Style.Description
 {
     public class WordStyle
     {

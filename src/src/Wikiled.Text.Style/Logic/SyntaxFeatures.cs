@@ -2,28 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using Wikiled.Common.Extensions;
-using Wikiled.Sentiment.Text.Helpers;
-using Wikiled.Sentiment.Text.NLP.Style.Description.Data;
-using Wikiled.Sentiment.Text.Parser;
-using Wikiled.Sentiment.Text.Words;
+using Wikiled.Text.Analysis.NLP;
 using Wikiled.Text.Analysis.POS;
 using Wikiled.Text.Analysis.Reflection;
-using Wikiled.Text.Analysis.Structure;
+using Wikiled.Text.Style.Description.Data;
 
-namespace Wikiled.Sentiment.Text.NLP.Style
+namespace Wikiled.Text.Style.Logic
 {
     public class SyntaxFeatures : IDataSource
     {
         private readonly SyntaxData data = new SyntaxData();
 
-        private readonly Dictionary<string, int> posTables = new Dictionary<string, int>();
+        private IPOSTagger tagger;
 
-        private readonly IWordsHandler wordsHandler;
-
-        public SyntaxFeatures(IWordsHandler wordsHandler, TextBlock text)
+        public SyntaxFeatures(TextBlock text)
         {
             Text = text ?? throw new ArgumentNullException(nameof(text));
-            this.wordsHandler = wordsHandler ?? throw new ArgumentNullException(nameof(wordsHandler));
         }
 
         /// <summary>
@@ -90,70 +84,51 @@ namespace Wikiled.Sentiment.Text.NLP.Style
 
         public void Load()
         {
+            Dictionary<string, int> posTable = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             foreach (var sentenceItem in Text.Sentences)
             {
-                AutoEvictingDictionary<WordEx, IWordItem> table =
-                    new AutoEvictingDictionary<WordEx, IWordItem>(length: 3);
-                foreach (var word in sentenceItem.Words)
+                var words = sentenceItem.Words.Where(item => item.Tag.WordType != WordType.Symbol &&
+                                                             item.Tag.WordType == WordType.SeparationSymbol &&
+                                                             item.Tag.WordType == WordType.Unknown &&
+                                                             item.Tag.Tag.HasLetters())
+                    .ToArray();
+                foreach (var block in words.GetNGram())
                 {
-                    table.Increment();
-                    if (!(word.UnderlyingWord is IWordItem wordItem) ||
-                        wordItem.POS.WordType == WordType.Symbol ||
-                        wordItem.POS.WordType == WordType.SeparationSymbol ||
-                        wordItem.POS.WordType == WordType.Unknown ||
-                        !wordItem.POS.Tag.HasLetters())
+                    if (!posTable.TryGetValue(block.PosMask, out var value))
                     {
-                        continue;
+                        value = 0;
                     }
 
-                    table.Add(word, wordItem);
-                    if (table.Count == 3)
-                    {
-                        string mask = $"{table.Values[0].POS.Tag} {table.Values[1].POS.Tag} {table.Values[2].POS.Tag}";
-                        if (posTables.TryGetValue(mask, out int total))
-                        {
-                            total += 1;
-                        }
-                        else
-                        {
-                            total = 1;
-                        }
-
-                        posTables[mask] = total;
-                    }
+                    value++;
+                    posTable[block.PosMask] = value;
                 }
             }
 
-            data.AdjectivesPercentage = (double)Text.Words.Count(item => wordsHandler.PosTagger.IsWordType(item, WordType.Adjective)) /
-                                        Text.Words.Length;
-            data.AdverbsPercentage = (double)Text.Words.Count(item => wordsHandler.PosTagger.IsWordType(item, WordType.Adverb)) / Text.Words.Length;
-            data.QuestionPercentage = (double)Text.Words.Count(item => item.IsQuestion(wordsHandler)) / Text.Words.Length;
-            data.NounsPercentage = (double)Text.Words.Count(item => wordsHandler.PosTagger.IsWordType(item, WordType.Noun)) / Text.Words.Length;
-            data.VerbsPercentage = (double)Text.Words.Count(item => wordsHandler.PosTagger.IsWordType(item, WordType.Verb)) /
-                                   Text.Words.Length;
-            var nouns = (double)Text.Words.Count(item => wordsHandler.PosTagger.IsWordType(item, WordType.Noun));
+
+            data.AdjectivesPercentage = (double)Text.Words.Count(item => tagger.IsWordType(item, WordType.Adjective)) / Text.Words.Length;
+            data.AdverbsPercentage = (double)Text.Words.Count(item => tagger.IsWordType(item, WordType.Adverb)) / Text.Words.Length;
+            data.QuestionPercentage = (double)Text.Words.Count(item => item.IsQuestion()) / Text.Words.Length;
+            data.NounsPercentage = (double)Text.Words.Count(item => tagger.IsWordType(item, WordType.Noun)) / Text.Words.Length;
+            data.VerbsPercentage = (double)Text.Words.Count(item => tagger.IsWordType(item, WordType.Verb)) / Text.Words.Length;
+            var nouns = (double)Text.Words.Count(item => tagger.IsWordType(item, WordType.Noun));
             if (nouns == 0)
             {
                 data.AdjectivesToNounsRatio = 0;
             }
             else
             {
-                data.AdjectivesToNounsRatio = Text.Words.Count(item => wordsHandler.PosTagger.IsWordType(item, WordType.Adjective)) /
-                                              nouns;
+                data.AdjectivesToNounsRatio = Text.Words.Count(item => tagger.IsWordType(item, WordType.Adjective)) / nouns;
             }
 
-            data.ProperNounsPercentage = (double)Text.Words.Count(item => wordsHandler.PosTagger.IsWordType(item, POSTags.Instance.NNS)) /
-                                         Text.Words.Length;
-            data.NumbersPercentage = (double)Text.Words.Count(item => item.IsDigit()) /
-                                     Text.Words.Length;
-            if (posTables.Count == 0)
+            data.ProperNounsPercentage = (double)Text.Words.Count(item => tagger.IsWordType(item, POSTags.Instance.NNS)) / Text.Words.Length;
+            data.NumbersPercentage = (double)Text.Words.Count(item => item.IsDigit()) / Text.Words.Length;
+            if (posTable.Count == 0)
             {
                 data.POSDiversity = 0;
             }
             else
             {
-                data.POSDiversity = (double)posTables.Count /
-                                    posTables.Sum(item => item.Value);
+                data.POSDiversity = (double)posTable.Count / posTable.Sum(item => item.Value);
             }
         }
     }

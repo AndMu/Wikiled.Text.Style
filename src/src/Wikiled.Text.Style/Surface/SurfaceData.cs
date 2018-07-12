@@ -1,7 +1,8 @@
 ﻿using System;
 using Wikiled.Text.Analysis.Reflection;
+using Wikiled.Text.Style.Logic;
 
-namespace Wikiled.Sentiment.Text.NLP.Style.Surface
+namespace Wikiled.Text.Style.Surface
 {
     /// <summary>
     ///     Simple Surface data

@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Linq;
-using Wikiled.Sentiment.Text.Parser;
+using Wikiled.Text.Analysis.NLP.NRC;
 using Wikiled.Text.Analysis.Structure;
+using Wikiled.Text.Style.Logic;
 
-namespace Wikiled.Sentiment.Text.NLP.Style.Description
+namespace Wikiled.Text.Style.Description
 {
     public class StyleExtractor
     {
         private readonly Document document;
 
-        private readonly IWordsHandler handler;
+        private INRCDictionary nrcDictionary;
 
-        public StyleExtractor(IWordsHandler handler, Document document)
+        public StyleExtractor(Document document)
         {
             this.document = document ?? throw new ArgumentNullException(nameof(document));
-            this.handler = handler ?? throw new ArgumentNullException(nameof(handler));
         }
 
         public DocumentStyle Extract()
         {
-            TextBlock text = new TextBlock(handler, document.Sentences.ToArray());
+            TextBlock text = new TextBlock(document.Sentences.ToArray());
             var style = new DocumentStyle();
             style.Obscrunity = text.VocabularyObscurity.GetData();
             style.CharactersSurface = text.Surface.Characters.GetData();
@@ -30,7 +30,7 @@ namespace Wikiled.Sentiment.Text.NLP.Style.Description
 
             foreach (var sentence in document.Sentences.Where(item => item.Words.Count > 0))
             {
-                text = new TextBlock(handler, new [] { sentence }, false);
+                text = new TextBlock(new [] { sentence }, false);
                 var sentenceStyle = new SentenceStyle();
                 sentenceStyle.Sentence = sentence;
                 style.Sentences.Add(sentenceStyle);
@@ -40,7 +40,7 @@ namespace Wikiled.Sentiment.Text.NLP.Style.Description
                 {
                     var wordStyle = new WordStyle(word);
                     wordStyle.Inquirer = text.InquirerFinger.GetData(word);
-                    var record = handler.NRCDictionary.FindRecord(word);
+                    var record = nrcDictionary.FindRecord(word.Text);
                     if (record != null)
                     {
                         wordStyle.NRC = record;

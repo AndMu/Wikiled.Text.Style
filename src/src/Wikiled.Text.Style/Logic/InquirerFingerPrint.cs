@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Wikiled.Sentiment.Text.NLP.Style.Description.Data;
 using Wikiled.Text.Analysis.Reflection;
 using Wikiled.Text.Analysis.Reflection.Data;
 using Wikiled.Text.Analysis.Structure;
 using Wikiled.Text.Inquirer.Data;
 using Wikiled.Text.Inquirer.Logic;
+using Wikiled.Text.Style.Description.Data;
 
-namespace Wikiled.Sentiment.Text.NLP.Style
+namespace Wikiled.Text.Style.Logic
 {
     [InfoCategory("Inquirer Based Info")]
     public class InquirerFingerPrint : IDataSource
