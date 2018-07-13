@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Wikiled.Common.Extensions;
+using Wikiled.Text.Analysis.NLP;
+using Wikiled.Text.Analysis.NLP.Frequency;
+using Wikiled.Text.Analysis.POS;
 using Wikiled.Text.Analysis.Reflection;
 using Wikiled.Text.Analysis.Structure;
+using Wikiled.Text.Inquirer.Logic;
 using Wikiled.Text.Style.Obscurity;
 using Wikiled.Text.Style.Readability;
 using Wikiled.Text.Style.Surface;
@@ -11,13 +15,19 @@ using Wikiled.Text.Style.Surface;
 namespace Wikiled.Text.Style.Logic
 {
     [InfoCategory("Text Style")]
-    public class TextBlock : IDataSource
+    public class TextBlock : ITextBlock
     {
         private readonly Dictionary<string, List<WordEx>> lemmaDictionary = new Dictionary<string, List<WordEx>>(StringComparer.OrdinalIgnoreCase);
 
         private readonly Dictionary<string, List<WordEx>> wordDictionary = new Dictionary<string, List<WordEx>>(StringComparer.OrdinalIgnoreCase);
 
-        public TextBlock(SentenceItem[] sentences, bool load = true)
+        private IFrequencyListManager frequency;
+
+        private IInquirerManager inquirer;
+
+        private IPOSTagger tagger;
+
+        public TextBlock(IPOSTagger tagger, IInquirerManager inquirer, IFrequencyListManager frequency, SentenceItem[] sentences, bool load = true)
         {
             if (sentences is null)
             {
@@ -30,6 +40,9 @@ namespace Wikiled.Text.Style.Logic
             }
 
             Sentences = sentences;
+            this.tagger = tagger ?? throw new ArgumentNullException(nameof(tagger));
+            this.inquirer = inquirer ?? throw new ArgumentNullException(nameof(inquirer));
+            this.frequency = frequency ?? throw new ArgumentNullException(nameof(frequency));
             Surface = new SurfaceData(this);
             Readability = new ReadabilityDataSource(this);
             Words = (from sentence in Sentences
@@ -49,14 +62,19 @@ namespace Wikiled.Text.Style.Logic
                     pure.Add(word);
                 }
 
-                lemmaDictionary.GetSafeCreate(handler.Extractor.GetWord(word.Text)).Add(word);
+                if (!string.IsNullOrEmpty(word.Raw))
+                {
+                    lemmaDictionary.GetSafeCreate(word.Raw).Add(word);
+                }
+
                 wordDictionary.GetSafeCreate(word.Text).Add(word);
+                    
             }
 
             PureWords = pure.ToArray();
-            VocabularyObscurity = new VocabularyObscurity(handler.FrequencyListManager, this);
-            SyntaxFeatures = new SyntaxFeatures(this);
-            InquirerFinger = new InquirerFingerPrint(handler.InquirerManager, this);
+            VocabularyObscurity = new VocabularyObscurity(this, frequency);
+            SyntaxFeatures = new SyntaxFeatures(this, tagger);
+            InquirerFinger = new InquirerFingerPrint(this, inquirer);
 
             if (load)
             {

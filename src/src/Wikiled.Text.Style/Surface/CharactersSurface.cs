@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Wikiled.Text.Analysis.NLP;
 using Wikiled.Text.Analysis.Reflection;
 using Wikiled.Text.Style.Description.Data;
 using Wikiled.Text.Style.Logic;

@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using Wikiled.Text.Analysis.Structure;
+using Wikiled.Text.Style.Logic;
 
 namespace Wikiled.Text.Style.Tests.Logic
 {
@@ -8,10 +10,10 @@ namespace Wikiled.Text.Style.Tests.Logic
         [Test]
         public void CountSyllables()
         {
-            WordEx word = WordExFactory.Construct(ActualWordsHandler.Instance.WordsHandler.WordFactory.CreateWord("creatures", "NN"));
+            WordEx word = new WordEx("creatures");
             Assert.AreEqual(2, word.CountSyllables());
 
-            word = WordExFactory.Construct(ActualWordsHandler.Instance.WordsHandler.WordFactory.CreateWord("creature", "NN"));
+            word = new WordEx("creature");
             Assert.AreEqual(2, word.CountSyllables());
         }
     }

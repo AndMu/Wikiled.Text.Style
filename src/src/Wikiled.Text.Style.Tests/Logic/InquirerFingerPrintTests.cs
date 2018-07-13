@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Linq;
 using NUnit.Framework;
 
 namespace Wikiled.Text.Style.Tests.Logic
@@ -8,10 +8,10 @@ namespace Wikiled.Text.Style.Tests.Logic
     public class InquirerFingerPrintTests
     {
         [Test]
-        public async Task GetDataFirst()
+        public void GetDataFirst()
         {
-            var document = await ActualWordsHandler.Instance.Loader.InitDocument().ConfigureAwait(false);
-            var block = new TextBlock(ActualWordsHandler.Instance.WordsHandler, document.Sentences.ToArray());
+            var document = Global.InitDocument();
+            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
             Assert.AreEqual(205, block.InquirerFinger.InquirerProbabilities.AllLeafs.Count());
             int index = 27;
             Assert.AreEqual("PLACE", block.InquirerFinger.InquirerProbabilities.AllLeafs.Skip(1 + index).First().Name);
@@ -29,10 +29,10 @@ namespace Wikiled.Text.Style.Tests.Logic
         }
 
         [Test]
-        public async Task GetDataSecond()
+        public void GetDataSecond()
         {
-            var document = await ActualWordsHandler.Instance.Loader.InitDocument("cv001_19502.txt").ConfigureAwait(false);
-            var block = new TextBlock(ActualWordsHandler.Instance.WordsHandler, document.Sentences.ToArray());
+            var document = Global.InitDocument("cv001_19502.txt");
+            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
             int index = 27;
             Assert.AreEqual(205, block.InquirerFinger.InquirerProbabilities.AllLeafs.Count());
             Assert.AreEqual("PLACE", block.InquirerFinger.InquirerProbabilities.AllLeafs.Skip(1 + index).First().Name);

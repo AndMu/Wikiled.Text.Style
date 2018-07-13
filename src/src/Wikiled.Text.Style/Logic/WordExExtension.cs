@@ -87,15 +87,5 @@ namespace Wikiled.Text.Style.Logic
 
             return word.Tag == posType || tagger.GetTag(word.Text) == posType;
         }
-
-        public static bool IsQuestion(this WordEx word)
-        {
-            if (word is null)
-            {
-                throw new ArgumentNullException(nameof(word));
-            }
-
-            return wordsHandler.IsQuestion(wordsHandler.WordFactory.CreateWord(word.Text, "NN"));
-        }
     }
 }

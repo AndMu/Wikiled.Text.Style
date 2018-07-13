@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Wikiled.Text.Style.Tests.Logic
@@ -7,19 +6,11 @@ namespace Wikiled.Text.Style.Tests.Logic
     [TestFixture]
     public class SyntaxFeaturesTests
     {
-        private WordsHandlerHelper helper;
-
-        [SetUp]
-        public void Setup()
-        {
-            helper = new WordsHandlerHelper();
-        }
-
         [Test]
-        public async Task GetDataFirst()
+        public void GetDataFirst()
         {
-            var document = await ActualWordsHandler.Instance.Loader.InitDocument().ConfigureAwait(false);
-            TextBlock block = new TextBlock(ActualWordsHandler.Instance.WordsHandler, document.Sentences.ToArray());
+            var document = Global.InitDocument();
+            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
             Assert.AreEqual(0.0712, Math.Round(block.SyntaxFeatures.AdjectivesPercentage, 4));
             Assert.AreEqual(0.0712, Math.Round(block.SyntaxFeatures.AdverbsPercentage, 4));
             Assert.AreEqual(0.0188, Math.Round(block.SyntaxFeatures.QuestionPercentage, 4));
@@ -32,10 +23,10 @@ namespace Wikiled.Text.Style.Tests.Logic
         }
 
         [Test]
-        public async Task GetDataSecond()
+        public void GetDataSecond()
         {
-            var document = await ActualWordsHandler.Instance.Loader.InitDocument("cv001_19502.txt").ConfigureAwait(false);
-            TextBlock block = new TextBlock(ActualWordsHandler.Instance.WordsHandler, document.Sentences.ToArray());
+            var document = Global.InitDocument("cv001_19502.txt");
+            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
             Assert.AreEqual(0.0732, Math.Round(block.SyntaxFeatures.AdjectivesPercentage, 4));
             Assert.AreEqual(0.0691, Math.Round(block.SyntaxFeatures.AdverbsPercentage, 4));
             Assert.AreEqual(0.0203, Math.Round(block.SyntaxFeatures.QuestionPercentage, 4));

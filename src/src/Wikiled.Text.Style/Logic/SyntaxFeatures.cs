@@ -5,6 +5,7 @@ using Wikiled.Common.Extensions;
 using Wikiled.Text.Analysis.NLP;
 using Wikiled.Text.Analysis.POS;
 using Wikiled.Text.Analysis.Reflection;
+using Wikiled.Text.Analysis.Structure;
 using Wikiled.Text.Style.Description.Data;
 
 namespace Wikiled.Text.Style.Logic
@@ -13,11 +14,12 @@ namespace Wikiled.Text.Style.Logic
     {
         private readonly SyntaxData data = new SyntaxData();
 
-        private IPOSTagger tagger;
+        private readonly IPOSTagger tagger;
 
-        public SyntaxFeatures(TextBlock text)
+        public SyntaxFeatures(TextBlock text, IPOSTagger tagger)
         {
             Text = text ?? throw new ArgumentNullException(nameof(text));
+            this.tagger = tagger ?? throw new ArgumentNullException(nameof(tagger));
         }
 
         /// <summary>

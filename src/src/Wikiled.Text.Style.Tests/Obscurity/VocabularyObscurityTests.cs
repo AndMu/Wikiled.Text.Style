@@ -7,10 +7,10 @@ namespace Wikiled.Text.Style.Tests.Obscurity
     public class VocabularyObscurityTests
     {
         [Test]
-        public async Task GetDataFirst()
+        public void GetDataFirst()
         {
-            var document = await ActualWordsHandler.Instance.Loader.InitDocument().ConfigureAwait(false);
-            TextBlock block = new TextBlock(ActualWordsHandler.Instance.WordsHandler, document.Sentences.ToArray());
+            var document = Global.InitDocument();
+            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
             Assert.Greater(block.VocabularyObscurity.BNC.Top100Words, 0);
         }
     }

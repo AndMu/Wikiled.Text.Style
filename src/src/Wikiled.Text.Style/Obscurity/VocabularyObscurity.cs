@@ -7,7 +7,7 @@ namespace Wikiled.Text.Style.Obscurity
 {
     public class VocabularyObscurity : IDataSource
     {
-        public VocabularyObscurity(FrequencyListManager manager, TextBlock text)
+        public VocabularyObscurity(TextBlock text, IFrequencyListManager manager)
         {
             Internet = new SpecificObscrunity(text, manager.Internet);
             BNC = new SpecificObscrunity(text, manager.BNC);

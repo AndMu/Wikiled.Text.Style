@@ -8,10 +8,10 @@ namespace Wikiled.Text.Style.Tests.Surface
     public class SurfaceDataTests
     {
         [Test]
-        public async Task GetDataFirst()
+        public void GetDataFirst()
         {
-            var document = await ActualWordsHandler.Instance.Loader.InitDocument().ConfigureAwait(false);
-            TextBlock block = new TextBlock(ActualWordsHandler.Instance.WordsHandler, document.Sentences.ToArray());
+            var document = Global.InitDocument();
+            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
             Assert.AreEqual(119.12, Math.Round(block.Surface.Sentence.AverageLength, 2));
             Assert.AreEqual(4.3734, Math.Round(block.Surface.Words.AverageLength, 4));
             Assert.AreEqual(1.3834, Math.Round(block.Surface.Words.AverageSyllables, 4));
@@ -35,10 +35,10 @@ namespace Wikiled.Text.Style.Tests.Surface
         }
 
         [Test]
-        public async Task GetDataSecond()
+        public void GetDataSecond()
         {
-            var document = await ActualWordsHandler.Instance.Loader.InitDocument("cv001_19502.txt").ConfigureAwait(false);
-            TextBlock block = new TextBlock(ActualWordsHandler.Instance.WordsHandler, document.Sentences.ToArray());
+            var document = Global.InitDocument("cv001_19502.txt");
+            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
             Assert.AreEqual(110.92, Math.Round(block.Surface.Sentence.AverageLength, 2));
             Assert.AreEqual(4.3375, Math.Round(block.Surface.Words.AverageLength, 4));
             Assert.AreEqual(1.3625, Math.Round(block.Surface.Words.AverageSyllables, 4));

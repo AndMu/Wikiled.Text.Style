@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Wikiled.Text.Analysis.NLP;
 using Wikiled.Text.Analysis.Reflection;
 using Wikiled.Text.Analysis.Words;
 using Wikiled.Text.Style.Description.Data;
@@ -57,10 +58,8 @@ namespace Wikiled.Text.Style.Surface
         {
             sentenceSurface.AverageLength = Text.Sentences.Sum(item => item.Text.Length) / (double)Text.Sentences.Length;
             sentenceSurface.PercentOfLong = Text.Sentences.Count(item => item.Words.Count > 15) / (double)Text.Words.Length;
-            sentenceSurface.PercentOfShort = Text.Sentences.Count(item => item.Words.Count < 8) /
-                                             (double)Text.Words.Length;
-            sentenceSurface.PercentOfQuestion = Text.Sentences.Count(item => item.IsQuestion()) /
-                                                (double)Text.Words.Length;
+            sentenceSurface.PercentOfShort = Text.Sentences.Count(item => item.Words.Count < 8) / (double)Text.Words.Length;
+            sentenceSurface.PercentOfQuestion = Text.Sentences.Count(item => item.IsQuestion()) / (double)Text.Words.Length;
             sentenceSurface.PercentOfBeginningWithConjunction = Text.Sentences.Count(
                 item => item.Words.Count > 0 &&
                         WordTypeResolver.Instance.IsConjunction(item.Words[0].Text)) / (double)Text.Words.Length;

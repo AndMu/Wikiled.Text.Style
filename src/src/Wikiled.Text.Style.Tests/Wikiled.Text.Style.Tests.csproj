@@ -1,17 +1,36 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>NET471</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
-  <ItemGroup>    
+  <ItemGroup>
     <PackageReference Include="Moq" Version="4.8.3" />
     <PackageReference Include="NLog" version="4.5.6" />
-    <PackageReference Include="NUnit" version="3.10.1" />    
+    <PackageReference Include="NUnit" version="3.10.1" />
+    <PackageReference Include="Wikiled.Text.Analysis" Version="1.6.9" />
+    <PackageReference Include="Wikiled.Text.Inquirer" Version="1.2.0" />
   </ItemGroup>
 
-  
+  <ItemGroup>
+    <ProjectReference Include="..\Wikiled.Text.Style\Wikiled.Text.Style.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\cv000_29416.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\cv001_19502.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+
   <Target Name="ForceGenerationOfBindingRedirects" AfterTargets="ResolveAssemblyReferences" BeforeTargets="GenerateBindingRedirects" Condition="'$(AutoGenerateBindingRedirects)' == 'true'">
     <PropertyGroup>
       <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>

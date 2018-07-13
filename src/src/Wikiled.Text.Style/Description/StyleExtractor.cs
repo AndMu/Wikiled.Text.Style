@@ -1,25 +1,38 @@
 ﻿using System;
 using System.Linq;
+using Wikiled.Text.Analysis.NLP.Frequency;
 using Wikiled.Text.Analysis.NLP.NRC;
+using Wikiled.Text.Analysis.POS;
 using Wikiled.Text.Analysis.Structure;
+using Wikiled.Text.Inquirer.Logic;
 using Wikiled.Text.Style.Logic;
 
 namespace Wikiled.Text.Style.Description
 {
-    public class StyleExtractor
+    public class StyleExtractor : IStyleExtractor
     {
         private readonly Document document;
 
-        private INRCDictionary nrcDictionary;
+        private readonly INRCDictionary nrcDictionary;
 
-        public StyleExtractor(Document document)
+        private readonly IFrequencyListManager frequency;
+
+        private readonly IInquirerManager inquirer;
+
+        private readonly IPOSTagger tagger;
+
+        public StyleExtractor(Document document, IPOSTagger tagger, INRCDictionary nrcDictionary, IFrequencyListManager frequency, IInquirerManager inquirer)
         {
             this.document = document ?? throw new ArgumentNullException(nameof(document));
+            this.nrcDictionary = nrcDictionary ?? throw new ArgumentNullException(nameof(nrcDictionary));
+            this.frequency = frequency ?? throw new ArgumentNullException(nameof(frequency));
+            this.inquirer = inquirer ?? throw new ArgumentNullException(nameof(inquirer));
+            this.tagger = tagger ?? throw new ArgumentNullException(nameof(tagger));
         }
 
         public DocumentStyle Extract()
         {
-            TextBlock text = new TextBlock(document.Sentences.ToArray());
+            TextBlock text = new TextBlock(tagger, inquirer, frequency, document.Sentences.ToArray());
             var style = new DocumentStyle();
             style.Obscrunity = text.VocabularyObscurity.GetData();
             style.CharactersSurface = text.Surface.Characters.GetData();
@@ -30,7 +43,7 @@ namespace Wikiled.Text.Style.Description
 
             foreach (var sentence in document.Sentences.Where(item => item.Words.Count > 0))
             {
-                text = new TextBlock(new [] { sentence }, false);
+                text = new TextBlock(tagger, inquirer, frequency, new[] { sentence }, false);
                 var sentenceStyle = new SentenceStyle();
                 sentenceStyle.Sentence = sentence;
                 style.Sentences.Add(sentenceStyle);

@@ -19,7 +19,7 @@ namespace Wikiled.Text.Style.Logic
 
         private readonly IInquirerManager inquirer;
 
-        public InquirerFingerPrint(IInquirerManager inquirer, TextBlock text)
+        public InquirerFingerPrint(TextBlock text, IInquirerManager inquirer)
         {
             Text = text ?? throw new ArgumentNullException(nameof(text));
             this.inquirer = inquirer ?? throw new ArgumentNullException(nameof(inquirer));
@@ -60,7 +60,7 @@ namespace Wikiled.Text.Style.Logic
             map["Negative"] = 0;
             foreach (var wordEx in Text.Words)
             {
-                InquirerDefinition definition = inquirer.GetWordDefinitions(wordEx);
+                InquirerDefinition definition = wordEx.GetPossibleVariation(word => inquirer.GetDefinitions(word));
                 Dictionary<string, bool> table = new Dictionary<string, bool>();
                 wordLevelFingerPrint[wordEx] = table;
                 foreach (var inquirerRecord in definition.Records)
