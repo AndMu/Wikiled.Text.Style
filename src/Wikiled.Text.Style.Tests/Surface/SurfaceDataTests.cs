@@ -11,7 +11,7 @@ namespace Wikiled.Text.Style.Tests.Surface
         public void GetDataFirst()
         {
             var document = Global.InitDocument();
-            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             Assert.AreEqual(119.12, Math.Round(block.Surface.Sentence.AverageLength, 2));
             Assert.AreEqual(4.3734, Math.Round(block.Surface.Words.AverageLength, 4));
             Assert.AreEqual(1.3834, Math.Round(block.Surface.Words.AverageSyllables, 4));
@@ -38,7 +38,7 @@ namespace Wikiled.Text.Style.Tests.Surface
         public void GetDataSecond()
         {
             var document = Global.InitDocument("cv001_19502.txt");
-            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             Assert.AreEqual(110.92, Math.Round(block.Surface.Sentence.AverageLength, 2));
             Assert.AreEqual(4.3375, Math.Round(block.Surface.Words.AverageLength, 4));
             Assert.AreEqual(1.3625, Math.Round(block.Surface.Words.AverageSyllables, 4));

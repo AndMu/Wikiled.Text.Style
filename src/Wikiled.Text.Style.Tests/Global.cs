@@ -45,6 +45,5 @@ namespace Wikiled.Text.Style.Tests
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, @"Data");
             return Extraction.GetDocument(File.ReadAllText(Path.Combine(path, name)));
         }
-
     }
 }

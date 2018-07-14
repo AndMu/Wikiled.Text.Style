@@ -10,7 +10,7 @@ namespace Wikiled.Text.Style.Tests.Logic
         public void GetDataFirst()
         {
             var document = Global.InitDocument();
-            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             Assert.AreEqual(326, block.TotalLemmas);
             Assert.AreEqual(352, block.TotalWordTokens);
         }

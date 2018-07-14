@@ -11,7 +11,7 @@ namespace Wikiled.Text.Style.Tests.Logic
         public void GetDataFirst()
         {
             var document = Global.InitDocument();
-            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             Assert.AreEqual(205, block.InquirerFinger.InquirerProbabilities.AllLeafs.Count());
             int index = 27;
             Assert.AreEqual("PLACE", block.InquirerFinger.InquirerProbabilities.AllLeafs.Skip(1 + index).First().Name);
@@ -32,7 +32,7 @@ namespace Wikiled.Text.Style.Tests.Logic
         public void GetDataSecond()
         {
             var document = Global.InitDocument("cv001_19502.txt");
-            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             int index = 27;
             Assert.AreEqual(205, block.InquirerFinger.InquirerProbabilities.AllLeafs.Count());
             Assert.AreEqual("PLACE", block.InquirerFinger.InquirerProbabilities.AllLeafs.Skip(1 + index).First().Name);

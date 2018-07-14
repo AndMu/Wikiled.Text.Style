@@ -8,7 +8,7 @@ using Wikiled.Text.Style.Description;
 
 namespace Wikiled.Text.Style.Logic
 {
-    public class StyleFactory
+    public class StyleFactory : IStyleFactory
     {
         private readonly INRCDictionary nrcDictionary;
 
@@ -26,12 +26,12 @@ namespace Wikiled.Text.Style.Logic
             this.tagger = tagger ?? throw new ArgumentNullException(nameof(tagger));
         }
 
-        public IStyleExtractor Construct(Document document)
+        public IStyleExtractor ConstructStyle(Document document)
         {
             return new StyleExtractor(document, tagger, nrcDictionary, frequency, inquirer);
         }
 
-        public ITextBlock Construct(SentenceItem[] sentences)
+        public ITextBlock ConstructTextBlock(SentenceItem[] sentences)
         {
             return new TextBlock(tagger, inquirer, frequency, sentences);
         }

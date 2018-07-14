@@ -10,7 +10,7 @@ namespace Wikiled.Text.Style.Tests.Obscurity
         public void GetDataFirst()
         {
             var document = Global.InitDocument();
-            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             Assert.Greater(block.VocabularyObscurity.BNC.Top100Words, 0);
         }
     }

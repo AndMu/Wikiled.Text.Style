@@ -10,7 +10,7 @@ namespace Wikiled.Text.Style.Tests.Logic
         public void GetDataFirst()
         {
             var document = Global.InitDocument();
-            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             Assert.AreEqual(0.067, Math.Round(block.SyntaxFeatures.AdjectivesPercentage, 4));
             Assert.AreEqual(0.067, Math.Round(block.SyntaxFeatures.AdverbsPercentage, 4));
             Assert.AreEqual(0.0177, Math.Round(block.SyntaxFeatures.QuestionPercentage, 4));
@@ -26,7 +26,7 @@ namespace Wikiled.Text.Style.Tests.Logic
         public void GetDataSecond()
         {
             var document = Global.InitDocument("cv001_19502.txt");
-            var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             Assert.AreEqual(0.0682, Math.Round(block.SyntaxFeatures.AdjectivesPercentage, 4));
             Assert.AreEqual(0.0644, Math.Round(block.SyntaxFeatures.AdverbsPercentage, 4));
             Assert.AreEqual(0.0189, Math.Round(block.SyntaxFeatures.QuestionPercentage, 4));
