@@ -33,7 +33,9 @@ namespace Wikiled.Text.Style.Logic
 
         public ITextBlock ConstructTextBlock(SentenceItem[] sentences)
         {
-            return new TextBlock(tagger, inquirer, frequency, sentences);
+            var textBlock = new TextBlock(tagger, inquirer, frequency, sentences);
+            textBlock.Load();
+            return textBlock;
         }
     }
 }

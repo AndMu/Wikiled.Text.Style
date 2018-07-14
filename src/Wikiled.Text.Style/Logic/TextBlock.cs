@@ -21,7 +21,7 @@ namespace Wikiled.Text.Style.Logic
 
         private readonly Dictionary<string, List<WordEx>> wordDictionary = new Dictionary<string, List<WordEx>>(StringComparer.OrdinalIgnoreCase);
 
-        public TextBlock(IPOSTagger tagger, IInquirerManager inquirer, IFrequencyListManager frequency, SentenceItem[] sentences, bool load = true)
+        public TextBlock(IPOSTagger tagger, IInquirerManager inquirer, IFrequencyListManager frequency, SentenceItem[] sentences)
         {
             if (tagger is null)
             {
@@ -56,9 +56,7 @@ namespace Wikiled.Text.Style.Logic
             Sentences = sentences;
             Surface = new SurfaceData(this);
             Readability = new ReadabilityDataSource(this);
-            Words = (from sentence in Sentences
-                     from word in sentence.Words
-                     select word).ToArray();
+            Words = (from sentence in Sentences from word in sentence.Words select word).ToArray();
             if (Words.Length == 0)
             {
                 throw new ArgumentException("Value cannot be an empty collection.", nameof(Words));
@@ -85,10 +83,6 @@ namespace Wikiled.Text.Style.Logic
             VocabularyObscurity = new VocabularyObscurity(this, frequency);
             SyntaxFeatures = new SyntaxFeatures(this, tagger);
             InquirerFinger = new InquirerFingerPrint(this, inquirer);
-            if (load)
-            {
-                Load();
-            }
         }
 
         [InfoCategory("Inquirer Based Info", IsCollapsed = true)]
