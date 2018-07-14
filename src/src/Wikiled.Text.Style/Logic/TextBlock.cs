@@ -21,14 +21,28 @@ namespace Wikiled.Text.Style.Logic
 
         private readonly Dictionary<string, List<WordEx>> wordDictionary = new Dictionary<string, List<WordEx>>(StringComparer.OrdinalIgnoreCase);
 
-        private IFrequencyListManager frequency;
-
-        private IInquirerManager inquirer;
-
-        private IPOSTagger tagger;
-
         public TextBlock(IPOSTagger tagger, IInquirerManager inquirer, IFrequencyListManager frequency, SentenceItem[] sentences, bool load = true)
         {
+            if (tagger is null)
+            {
+                throw new ArgumentNullException(nameof(tagger));
+            }
+
+            if (inquirer is null)
+            {
+                throw new ArgumentNullException(nameof(inquirer));
+            }
+
+            if (frequency is null)
+            {
+                throw new ArgumentNullException(nameof(frequency));
+            }
+
+            if (sentences is null)
+            {
+                throw new ArgumentNullException(nameof(sentences));
+            }
+
             if (sentences is null)
             {
                 throw new ArgumentNullException(nameof(sentences));
@@ -40,9 +54,6 @@ namespace Wikiled.Text.Style.Logic
             }
 
             Sentences = sentences;
-            this.tagger = tagger ?? throw new ArgumentNullException(nameof(tagger));
-            this.inquirer = inquirer ?? throw new ArgumentNullException(nameof(inquirer));
-            this.frequency = frequency ?? throw new ArgumentNullException(nameof(frequency));
             Surface = new SurfaceData(this);
             Readability = new ReadabilityDataSource(this);
             Words = (from sentence in Sentences
@@ -68,14 +79,12 @@ namespace Wikiled.Text.Style.Logic
                 }
 
                 wordDictionary.GetSafeCreate(word.Text).Add(word);
-                    
             }
 
             PureWords = pure.ToArray();
             VocabularyObscurity = new VocabularyObscurity(this, frequency);
             SyntaxFeatures = new SyntaxFeatures(this, tagger);
             InquirerFinger = new InquirerFingerPrint(this, inquirer);
-
             if (load)
             {
                 Load();

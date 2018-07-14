@@ -1,7 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
+using Microsoft.Extensions.Caching.Memory;
 using NUnit.Framework;
+using Wikiled.Text.Analysis.Dictionary;
+using Wikiled.Text.Analysis.NLP;
 using Wikiled.Text.Analysis.NLP.Frequency;
 using Wikiled.Text.Analysis.NLP.NRC;
 using Wikiled.Text.Analysis.POS;
@@ -27,8 +28,11 @@ namespace Wikiled.Text.Style.Tests
         public void Setup()
         {
             PosTagger = new NaivePOSTagger(new BNCList(), WordTypeResolver.Instance);
-            StyleFactory = new StyleFactory(PosTagger, new NRCDictionary(), new FrequencyListManager(), new InquirerManager());
-            Extraction = new SimpleWordsExtraction(SentenceTokenizer.Create(PosTagger, true, false));
+            var inquirer = new InquirerManager();
+            inquirer.Load();
+            StyleFactory = new StyleFactory(PosTagger, new NRCDictionary(), new FrequencyListManager(), inquirer);
+            var factory = new SentenceTokenizerFactory(PosTagger, new RawWordExtractor(new BasicEnglishDictionary(), new MemoryCache(new MemoryCacheOptions())));
+            Extraction = new SimpleWordsExtraction(factory.Create(true, false));
         }
 
         [OneTimeTearDown]

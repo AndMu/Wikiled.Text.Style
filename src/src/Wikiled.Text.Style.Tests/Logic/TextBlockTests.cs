@@ -11,8 +11,8 @@ namespace Wikiled.Text.Style.Tests.Logic
         {
             var document = Global.InitDocument();
             var block = Global.StyleFactory.Construct(document.Sentences.ToArray());
-            Assert.AreEqual(324, block.TotalLemmas);
-            Assert.AreEqual(350, block.TotalWordTokens);
+            Assert.AreEqual(326, block.TotalLemmas);
+            Assert.AreEqual(352, block.TotalWordTokens);
         }
     }
 }

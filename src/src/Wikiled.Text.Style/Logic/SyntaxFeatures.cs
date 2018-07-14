@@ -90,9 +90,9 @@ namespace Wikiled.Text.Style.Logic
             foreach (var sentenceItem in Text.Sentences)
             {
                 var words = sentenceItem.Words.Where(item => item.Tag.WordType != WordType.Symbol &&
-                                                             item.Tag.WordType == WordType.SeparationSymbol &&
-                                                             item.Tag.WordType == WordType.Unknown &&
-                                                             item.Tag.Tag.HasLetters())
+                                                             item.Tag.WordType != WordType.SeparationSymbol &&
+                                                             item.Tag.WordType != WordType.Unknown &&
+                                                             item.Text.HasLetters())
                     .ToArray();
                 foreach (var block in words.GetNGram())
                 {
