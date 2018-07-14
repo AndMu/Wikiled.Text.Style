@@ -18,5 +18,13 @@
     <PackageReference Include="Wikiled.Text.Analysis" Version="1.6.10" />
     <PackageReference Include="Wikiled.Text.Inquirer" Version="1.2.9" />
   </ItemGroup>  
+Wikiled.Text.Style
+  <Target Name="IncludeP2PAssets">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)Wikiled.Text.Style.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Wikiled.Text.Style.pdb" />
+    </ItemGroup>
+  </Target>
+
  
 </Project>
