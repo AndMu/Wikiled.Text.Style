@@ -43,7 +43,7 @@ namespace Wikiled.Text.Style.Description
 
             foreach (var sentence in document.Sentences.Where(item => item.Words.Count > 0))
             {
-                text = new TextBlock(tagger, inquirer, frequency, new[] { sentence }, false);
+                text = new TextBlock(tagger, inquirer, frequency, new[] { sentence });
                 var sentenceStyle = new SentenceStyle();
                 sentenceStyle.Sentence = sentence;
                 style.Sentences.Add(sentenceStyle);
