@@ -25,6 +25,4 @@
       <BuildOutputInPackage Include="$(OutputPath)Wikiled.Text.Style.pdb" />
     </ItemGroup>
   </Target>
-
- 
 </Project>
