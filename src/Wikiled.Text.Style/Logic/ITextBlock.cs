@@ -17,6 +17,8 @@ namespace Wikiled.Text.Style.Logic
 
         SurfaceData Surface { get; }
 
+        SentimentFeatures Sentiment { get; }
+
         SyntaxFeatures SyntaxFeatures { get; }
 
         int TotalCharacters { get; }

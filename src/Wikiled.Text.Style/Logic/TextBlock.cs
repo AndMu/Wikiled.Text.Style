@@ -83,6 +83,7 @@ namespace Wikiled.Text.Style.Logic
             VocabularyObscurity = new VocabularyObscurity(this, frequency);
             SyntaxFeatures = new SyntaxFeatures(this, tagger);
             InquirerFinger = new InquirerFingerPrint(this, inquirer);
+            Sentiment = new SentimentFeatures(this);
         }
 
         [InfoCategory("Inquirer Based Info", IsCollapsed = true)]
@@ -101,6 +102,9 @@ namespace Wikiled.Text.Style.Logic
         [InfoCategory("Syntax Features")]
         public SyntaxFeatures SyntaxFeatures { get; }
 
+        [InfoCategory("Sentiment")]
+        public SentimentFeatures Sentiment { get; }
+
         public int TotalCharacters { get; private set; }
 
         public int TotalLemmas => lemmaDictionary.Count;
@@ -115,6 +119,7 @@ namespace Wikiled.Text.Style.Logic
         public void Load()
         {
             TotalCharacters = Sentences.Sum(item => item.CountCharacters());
+            Sentiment.Load();
             Surface.Load();
             InquirerFinger.Load();
             SyntaxFeatures.Load();

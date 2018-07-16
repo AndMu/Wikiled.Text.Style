@@ -1,12 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Wikiled.MachineLearning.Mathematics;
+using Wikiled.Text.Analysis.Reflection;
 
 namespace Wikiled.Text.Style.Logic
 {
     public class SentimentFeatures : IDataSource
     {
+        public SentimentFeatures(TextBlock text)
+        {
+            Text = text ?? throw new System.ArgumentNullException(nameof(text));
+        }
+
         public TextBlock Text { get; }
+
+        [InfoField("Calculated Sentiment")]
+        public double Sentiment { get; private set; }
 
         public void Load()
         {
@@ -16,50 +24,32 @@ namespace Wikiled.Text.Style.Logic
             {
                 foreach (var word in sentenceItem.Words)
                 {
+                    double? value = null;
                     if (word.Value.HasValue)
                     {
-                        if (word.Value.Value > 0)
+                        value = word.Value;
+                    }
+
+                    if (word.CalculatedValue.HasValue)
+                    {
+                        value = word.CalculatedValue.Value;
+                    }
+
+                    if (value != null)
+                    {
+                        if (value > 0)
                         {
-                            positive += word.Value.Value;
+                            positive += Math.Abs(value.Value);
                         }
                         else
                         {
-                            negative += word.Value.Value;
+                            negative += Math.Abs(value.Value);
                         }
                     }
                 }
             }
 
-            var sentiment = Calculate(positive, negative);
+            Sentiment = RatingCalculator.Calculate(positive, negative);
         }
-
-        private static double Calculate(double positive, double negative)
-        {
-            int coefficient = 2;
-            if (positive == 0 &&
-                negative == 0)
-            {
-                return 0;
-            }
-
-            double min = 0.0001;
-            positive += min;
-            negative += min;
-            double rating = Math.Log(positive / negative, 2);
-
-            if (positive == min ||
-                rating < -coefficient)
-            {
-                rating = -coefficient;
-            }
-            else if (negative == min || rating > coefficient)
-            {
-                rating = coefficient;
-            }
-
-            rating = rating / coefficient;
-            return rating;
-        }
-
     }
 }
