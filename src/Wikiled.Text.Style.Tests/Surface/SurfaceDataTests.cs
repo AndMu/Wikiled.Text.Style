@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Wikiled.Text.Style.Tests.Surface

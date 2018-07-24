@@ -2,13 +2,26 @@
 {
     public class ObscrunityData : INLPDataItem
     {
+        public ObscrunityData()
+        {
+            Top100Words = 0;
+            Top500Words = 0;
+            Top1000Words = 0;
+            Top5000Words = 0;
+            Top10000Words = 0;
+            Top50000Words = 0;
+            Top100000Words = 0;
+            Top200000Words = 0;
+            Top300000Words = 0;
+        }
+
         public double Top100Words { get; set; }
 
         public double Top500Words { get; set; }
 
         public double Top1000Words { get; set; }
 
-        public double Top5000Words { get;  set; }
+        public double Top5000Words { get; set; }
 
         public double Top10000Words { get; set; }
 
