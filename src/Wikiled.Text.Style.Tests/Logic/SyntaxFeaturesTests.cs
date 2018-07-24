@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
-using Newtonsoft.Json;
 using NUnit.Framework;
-using Wikiled.Text.Analysis.Structure;
 
 namespace Wikiled.Text.Style.Tests.Logic
 {
@@ -29,7 +26,7 @@ namespace Wikiled.Text.Style.Tests.Logic
         public void GetDataSecond()
         {
             var document = Global.InitDocument("cv001_19502.txt");
-            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());vo
+            var block = Global.StyleFactory.ConstructTextBlock(document.Sentences.ToArray());
             Assert.AreEqual(0.0682, Math.Round(block.SyntaxFeatures.AdjectivesPercentage, 4));
             Assert.AreEqual(0.0644, Math.Round(block.SyntaxFeatures.AdverbsPercentage, 4));
             Assert.AreEqual(0.0189, Math.Round(block.SyntaxFeatures.QuestionPercentage, 4));

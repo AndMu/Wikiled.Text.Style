@@ -2,13 +2,13 @@
 {
     public class AllObscrunityData : INLPDataItem
     {
-        public ObscrunityData Reuters { get; set; }
+        public ObscurityData Reuters { get; set; }
 
-        public ObscrunityData Internet { get; set; }
+        public ObscurityData Internet { get; set; }
 
-        public ObscrunityData BNC { get; set; }
+        public ObscurityData BNC { get; set; }
 
-        public ObscrunityData Subtitles { get; set; }
+        public ObscurityData Subtitles { get; set; }
 
         public object Clone()
         {

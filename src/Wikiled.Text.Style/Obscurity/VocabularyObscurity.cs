@@ -9,23 +9,23 @@ namespace Wikiled.Text.Style.Obscurity
     {
         public VocabularyObscurity(TextBlock text, IFrequencyListManager manager)
         {
-            Internet = new SpecificObscrunity(text, manager.Internet);
-            BNC = new SpecificObscrunity(text, manager.BNC);
-            Reuters = new SpecificObscrunity(text, manager.Reuters);
-            Subtitles = new SpecificObscrunity(text, manager.Subtitles);
+            Internet = new SpecificObscurity(text, manager.Internet);
+            BNC = new SpecificObscurity(text, manager.BNC);
+            Reuters = new SpecificObscurity(text, manager.Reuters);
+            Subtitles = new SpecificObscurity(text, manager.Subtitles);
         }
 
         [InfoCategory("Reuters", Ignore = true)]
-        public SpecificObscrunity Reuters { get; }
+        public SpecificObscurity Reuters { get; }
 
         [InfoCategory("Internet", Ignore = true)]
-        public SpecificObscrunity Internet { get; }
+        public SpecificObscurity Internet { get; }
 
         [InfoCategory("BNC")]
-        public SpecificObscrunity BNC { get; }
+        public SpecificObscurity BNC { get; }
 
         [InfoCategory("Subtitles", Ignore = true)]
-        public SpecificObscrunity Subtitles { get; }
+        public SpecificObscurity Subtitles { get; }
 
         public void Load()
         {

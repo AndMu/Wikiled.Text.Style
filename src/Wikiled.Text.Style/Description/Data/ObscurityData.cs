@@ -1,8 +1,8 @@
 ﻿namespace Wikiled.Text.Style.Description.Data
 {
-    public class ObscrunityData : INLPDataItem
+    public class ObscurityData : INLPDataItem
     {
-        public ObscrunityData()
+        public ObscurityData()
         {
             Top100Words = 0;
             Top500Words = 0;
@@ -35,7 +35,7 @@
 
         public object Clone()
         {
-            return new ObscrunityData
+            return new ObscurityData
             {
                 Top100000Words = Top100000Words,
                 Top10000Words = Top10000Words,
